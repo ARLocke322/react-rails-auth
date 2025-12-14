@@ -1,0 +1,96 @@
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import authService from "../services/auth";
+import { Link, useLocation } from "wouter";
+import type { SignupFormData } from "@/schemas/auth";
+import { signupSchema } from "@/schemas/auth";
+
+const SignupForm: React.FC = () => {
+  const [signupError, setSignupError] = useState<string | null>(null);
+  const [_location, setLocation] = useLocation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    mode: "onSubmit",
+  });
+
+  const onSubmit = async (data: SignupFormData) => {
+    try {
+      setSignupError(null);
+      await authService.signup(data.email, data.password, data.password_confirmation);
+      setLocation("/")
+    } catch {
+      setSignupError("Invalid account credentials");
+    }
+  };
+
+  return (
+    <form
+      className="max-w-md mx-auto p-6 space-y-4"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div>
+        <input
+          type="email"
+          {...register("email", { required: true })}
+          placeholder="Email"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        {errors.email && (
+          <span className="text-red-500 text-sm mt-1 block">
+            {errors.email.message}
+          </span>
+        )}
+      </div>
+
+      <div>
+        <input
+          type="password"
+          {...register("password", { required: true })}
+          placeholder="Password"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        {errors.password && (
+          <span className="text-red-500 text-sm mt-1 block">
+            {errors.password.message}
+          </span>
+        )}
+      </div>
+
+      <div>
+        <input
+          type="password"
+          {...register("password_confirmation", { required: true })}
+          placeholder="Confirm password"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        {errors.password_confirmation && (
+          <span className="text-red-500 text-sm mt-1 block">
+            {errors.password_confirmation.message}
+          </span>
+        )}
+      </div>
+
+
+      <button
+        type="submit"
+        className="w-full bg-cyan-200 hover:bg-cyan-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors duration-200"
+      >
+        Sign Up
+      </button>
+
+      <div className="text-muted-foreground flex justify-center gap-1 text-sm">
+        <p>Already have an account?</p>
+        <Link to="/login" className="text-primary font-medium hover:underline">Login</Link>
+      </div>
+
+    </form>
+  );
+};
+
+export default SignupForm 

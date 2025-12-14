@@ -1,0 +1,72 @@
+import type { LoginResponse, ErrorResponse, SignupResponse } from "@/types/api/auth";
+
+import useAuthStore from "@/hooks/useAuthStore"
+import { isErrorResponse } from "@/utils/assertions";
+
+const baseUrl = "http://localhost:3000";
+
+
+const login = async (email_address: string, password: string) => {
+  try {
+    const res = await fetch(`${baseUrl}/v1/session`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        session: {
+          email_address,
+          password
+        }
+      }),
+    });
+
+    const data: LoginResponse | ErrorResponse = await res.json();
+
+    if (isErrorResponse(data)) {
+      return { error: data.error };
+    }
+
+    useAuthStore.getState().setAuth(data.token);
+    return { success: true };
+
+  } catch {
+    return { error: "Network or server error" };
+  }
+}
+
+const signup = async (
+  email_address: string, password: string, password_confirmation: string
+) => {
+  try {
+    const res = await fetch(`${baseUrl}/v1/registrations`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        registration: {
+          email_address,
+          password,
+          password_confirmation
+        }
+      }),
+    });
+
+    const data: LoginResponse | ErrorResponse = await res.json();
+
+    if (isErrorResponse(data)) {
+      return { error: data.error };
+    }
+
+    useAuthStore.getState().setAuth(data.token);
+    return { success: true };
+
+  } catch {
+    return { error: "Network or server error" };
+  }
+}
+export default {
+  login,
+  signup
+}

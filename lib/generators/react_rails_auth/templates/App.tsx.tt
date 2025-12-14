@@ -1,0 +1,27 @@
+import "./index.css";
+import LoginForm from "./components/LoginForm"
+import SignupForm from "./components/SignupForm";
+
+import logo from "./logo.svg";
+import reactLogo from "./react.svg";
+import useAuthStore from "./hooks/useAuthStore";
+import { Route, Switch } from "wouter";
+
+export function App() {
+  const token = useAuthStore((state) => state.currentToken)
+
+  if (!token) return (
+    <div>
+      <Switch>
+        <Route path="/login" component={LoginForm} />
+        <Route path="/signup" component={SignupForm} />
+        <Route component={LoginForm} />
+      </Switch>
+    </div>
+  )
+  return (
+    <h1>{token}</h1>
+  );
+}
+
+export default App;
