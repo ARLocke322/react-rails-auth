@@ -40,4 +40,8 @@ class ReactRailsAuthGenerator < Rails::Generators::Base
     template "index.ts.tt", "frontend/src/index.ts"
     template "package.json.tt", "frontend/package.json"
   end
+
+  def create_cors_initializer
+    template "initializers/cors.rb.tt", "config/initializers/cors.rb"
+  end
 end
