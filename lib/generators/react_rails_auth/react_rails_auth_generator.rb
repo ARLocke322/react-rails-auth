@@ -1,4 +1,5 @@
-class ReactRailsAuthGenerator < Rails::Generators::NamedBase
+class ReactRailsAuthGenerator < Rails::Generators::Base
+  source_root File.expand_path("templates", __dir__)
   def create_controller_files
     template "authentication_concern.rb.tt", "app/controllers/concerns/authentication.rb"
     template "application_controller.rb.tt", "app/controllers/application_controller.rb"
@@ -22,9 +23,9 @@ class ReactRailsAuthGenerator < Rails::Generators::NamedBase
   end
 
   def create_migration_files
-    template "create_users.rb.tt", "db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_create_users.rb"
+    template "create_users.rb.tt", "db/migrate/#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_create_users.rb"
     sleep 1
-    template "create_sessions.rb.tt", "db/migrate/#{Time.now.utc.strftime('%Y%m%d%H%M%S')}_create_sessions.rb"
+    template "create_sessions.rb.tt", "db/migrate/#{Time.now.utc.strftime("%Y%m%d%H%M%S")}_create_sessions.rb"
   end
 
   def create_frontend_files
