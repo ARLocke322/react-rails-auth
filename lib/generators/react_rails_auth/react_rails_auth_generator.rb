@@ -38,6 +38,6 @@ class ReactRailsAuthGenerator < Rails::Generators::Base
     template "assertions.ts.tt", "frontend/src/utils/assertions.ts"
     template "App.tsx.tt", "frontend/src/App.tsx"
     template "index.ts.tt", "frontend/src/index.ts"
-    template "package.json.tt", "frontend/src/package.json"
+    template "package.json.tt", "frontend/package.json"
   end
 end
