@@ -3,6 +3,12 @@
 # Generator for React Rails authentication setup
 class ReactRailsAuthGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
+
+  def add_gem_dependency
+    gem "rack-cors"
+    run "bundle install"
+  end
+
   def create_controller_files
     template "authentication_concern.rb.tt", "app/controllers/concerns/authentication.rb"
     template "application_controller.rb.tt", "app/controllers/application_controller.rb"
@@ -42,10 +48,6 @@ class ReactRailsAuthGenerator < Rails::Generators::Base
     template "App.tsx.tt", "frontend/src/App.tsx"
     template "index.ts.tt", "frontend/src/index.ts"
     template "package.json.tt", "frontend/package.json"
-  end
-
-  def add_gem_dependency
-    gem "rack-cors"
   end
 
   def create_cors_initializer
