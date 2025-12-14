@@ -1,35 +1,106 @@
 # ReactRailsAuth
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/react_rails_auth`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Rails generator that scaffolds a complete authentication system for React + Rails API applications with JWT token authentication. Modified rails generate authentication.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
-Install the gem and add to the application's Gemfile by executing:
-
+Add to your Gemfile:
 ```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem 'react_rails_auth', git: 'https://github.com/ARLocke322/react-rails-auth'
+gem 'rack-cors'
+gem 'bcrypt'
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
-
+Then run:
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+bundle install
 ```
 
 ## Usage
 
-TODO: Write usage instructions here
+### 1. Create a new Rails API app
+```bash
+rails new my_app --api
+cd my_app
+```
 
-## Development
+### 2. Add the gem and dependencies
+```bash
+bundle add react_rails_auth --git https://github.com/ARLocke322/react-rails-auth
+bundle add rack-cors bcrypt
+bundle install
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### 3. Initialize your React frontend
+```bash
+bun init frontend
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### 4. Generate authentication scaffolding
+```bash
+rails generate react_rails_auth
+```
 
-## Contributing
+This creates:
+- Controllers: `Authentication`, `Sessions`, `Registrations`, `Passwords`
+- Models: `User`, `Session`, `Current`
+- Migrations: `CreateUsers`, `CreateSessions`
+- React components: `LoginForm`, `SignupForm`
+- Auth utilities: Zustand store, Zod schemas, API service
+- CORS configuration
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/react_rails_auth.
+### 5. Run migrations
+```bash
+rails db:migrate
+```
+
+### 6. Install frontend dependencies
+```bash
+cd frontend
+bun install
+```
+
+### 7. Start your servers
+
+In one terminal:
+```bash
+rails s
+```
+
+In another terminal:
+```bash
+cd frontend
+bun dev
+```
+
+Your Rails API will run on `http://localhost:3000` and your React app on `http://localhost:5173`.
+
+## API Endpoints
+
+- `POST /v1/registrations` - Create new user account
+- `POST /v1/session` - Login
+- `DELETE /v1/session` - Logout
+- `POST /v1/passwords` - Request password reset
+- `PATCH /v1/passwords/:token` - Reset password
+
+## Frontend Structure
+```
+frontend/src/
+├── components/
+│   ├── LoginForm.tsx
+│   └── SignupForm.tsx
+├── hooks/
+│   └── useAuthStore.ts
+├── schemas/
+│   └── auth.ts
+├── services/
+│   └── auth.ts
+├── types/
+│   └── api/auth/index.ts
+└── utils/
+    └── assertions.ts
+```
+
+## License
+
+MIT
