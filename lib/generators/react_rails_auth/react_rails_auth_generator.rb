@@ -45,10 +45,6 @@ class ReactRailsAuthGenerator < Rails::Generators::Base
     template "package.json.tt", "frontend/package.json"
   end
 
-  def add_gem_dependency
-    gem "rack-cors"
-  end
-
   def create_cors_initializer
     template "cors.rb.tt", "config/initializers/cors.rb"
   end
