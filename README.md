@@ -100,7 +100,3 @@ frontend/src/
 └── utils/
     └── assertions.ts
 ```
-
-## License
-
-MIT
