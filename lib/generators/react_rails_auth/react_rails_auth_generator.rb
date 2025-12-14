@@ -45,6 +45,6 @@ class ReactRailsAuthGenerator < Rails::Generators::Base
   end
 
   def create_cors_initializer
-    template "initializers/cors.rb.tt", "config/initializers/cors.rb"
+    template "cors.rb.tt", "config/initializers/cors.rb"
   end
 end
