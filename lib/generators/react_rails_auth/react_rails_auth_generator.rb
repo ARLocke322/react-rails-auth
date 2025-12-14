@@ -4,11 +4,6 @@
 class ReactRailsAuthGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
-  def add_gem_dependency
-    gem "rack-cors"
-    run "bundle install"
-  end
-
   def create_controller_files
     template "authentication_concern.rb.tt", "app/controllers/concerns/authentication.rb"
     template "application_controller.rb.tt", "app/controllers/application_controller.rb"
